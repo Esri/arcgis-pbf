@@ -24,7 +24,7 @@ The FeatureCollection is an encoding of feature geographic and attribute data st
 
 ## Getting Started
 
-To get started, we recommend checking out official [ProtocolBuffers Documentation](https://developers.google.com/protocol-buffers/). From there, you can check out one of the [guides](https://developers.google.com/protocol-buffers/docs/tutorials) based on your targetted programming language. If you plan on using ProtocolBuffers on web, we recommend a couple of options for generating a parser - you can use either the official [`protoc`](https://developers.google.com/protocol-buffers/docs/reference/javascript-generated) compiler, or [`protobuf.js`](https://www.npmjs.com/package/protobufjs). 
+To get started, we recommend checking out the official [ProtocolBuffers Documentation](https://developers.google.com/protocol-buffers/). From there, take a look at one of the [guides](https://developers.google.com/protocol-buffers/docs/tutorials) based on your targetted programming language. If you plan on using ProtocolBuffers for the web, we recommend a couple of options for generating a parser - you can use either the official [`protoc`](https://developers.google.com/protocol-buffers/docs/reference/javascript-generated) compiler, or [`protobuf.js`](https://www.npmjs.com/package/protobufjs). 
 
 Depending on performance requirements, you may also opt to manually parse the payloads yourself. One of the advantages of protocol buffers is that you can have full control over how you want to deserialize, which in many instances can lead to sigificantly improved performance. 
 

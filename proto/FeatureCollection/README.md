@@ -41,7 +41,7 @@ enum GeometryType {
   esriGeometryTypePolygon = 3;
 }
  ``` 
-See the PBF file for the [full list](https://devtopia.esri.com/matt9222/arcgis-pbf/blob/master/proto/FeatureCollection/FeatureCollection.proto#L20-L78) of supported `Enums`. 
+See the PBF file for the [full list](https://github.com/Esri/arcgis-pbf/blob/main/proto/FeatureCollection/FeatureCollection.proto#L20-L78) of supported `Enums`. 
  
 ### Notable Messages:
 #### Field

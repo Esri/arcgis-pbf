@@ -88,11 +88,11 @@ message FeatureCollectionPBuffer {
   }
 
   message Field {
-    string name = 1; 
+    string name = 1;
     FieldType fieldType = 2;
-    string alias = 3; 
+    string alias = 3;
     SQLType sqlType = 4;
-    string domain = 5; 
+    string domain = 5;
     string defaultValue = 6;
   }
 
@@ -141,7 +141,7 @@ message FeatureCollectionPBuffer {
   }
 
   message ServerGens {
-    uint64 minServerGen = 1; 
+    uint64 minServerGen = 1;
     uint64 serverGen = 2;
   }
 
@@ -172,7 +172,7 @@ message FeatureCollectionPBuffer {
     string geohashFieldName = 4;
     GeometryProperties geometryProperties = 5;
     ServerGens serverGens = 6;
-    GeometryType geometryType = 7; 
+    GeometryType geometryType = 7;
     SpatialReference spatialReference = 8;
     bool exceededTransferLimit = 9;
     bool hasZ = 10;

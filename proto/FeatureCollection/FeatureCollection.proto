@@ -193,8 +193,7 @@ message FeatureCollectionPBuffer {
     repeated uint64 objectIds = 3 [packed = true];
   }
 
-  message QueryResult
-  {
+  message QueryResult {
     oneof Results {
       FeatureResult featureResult = 1;
       CountResult countResult = 2;

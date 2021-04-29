@@ -135,6 +135,7 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
          * @property {number} esriGeometryTypePolyline=2 esriGeometryTypePolyline value
          * @property {number} esriGeometryTypePolygon=3 esriGeometryTypePolygon value
          * @property {number} esriGeometryTypeMultipatch=4 esriGeometryTypeMultipatch value
+         * @property {number} esriGeometryTypeNone=127 esriGeometryTypeNone value
          */
         FeatureCollectionPBuffer.GeometryType = (function() {
             const valuesById = {}, values = Object.create(valuesById);
@@ -143,6 +144,7 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
             values[valuesById[2] = "esriGeometryTypePolyline"] = 2;
             values[valuesById[3] = "esriGeometryTypePolygon"] = 3;
             values[valuesById[4] = "esriGeometryTypeMultipatch"] = 4;
+            values[valuesById[127] = "esriGeometryTypeNone"] = 127;
             return values;
         })();
 
@@ -634,75 +636,75 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
 
             /**
              * Value stringValue.
-             * @member {string} stringValue
+             * @member {string|null|undefined} stringValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.stringValue = "";
+            Value.prototype.stringValue = null;
 
             /**
              * Value floatValue.
-             * @member {number} floatValue
+             * @member {number|null|undefined} floatValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.floatValue = 0;
+            Value.prototype.floatValue = null;
 
             /**
              * Value doubleValue.
-             * @member {number} doubleValue
+             * @member {number|null|undefined} doubleValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.doubleValue = 0;
+            Value.prototype.doubleValue = null;
 
             /**
              * Value sintValue.
-             * @member {number} sintValue
+             * @member {number|null|undefined} sintValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.sintValue = 0;
+            Value.prototype.sintValue = null;
 
             /**
              * Value uintValue.
-             * @member {number} uintValue
+             * @member {number|null|undefined} uintValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.uintValue = 0;
+            Value.prototype.uintValue = null;
 
             /**
              * Value int64Value.
-             * @member {number|Long} int64Value
+             * @member {number|Long|null|undefined} int64Value
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.int64Value = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.int64Value = null;
 
             /**
              * Value uint64Value.
-             * @member {number|Long} uint64Value
+             * @member {number|Long|null|undefined} uint64Value
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.uint64Value = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            Value.prototype.uint64Value = null;
 
             /**
              * Value sint64Value.
-             * @member {number|Long} sint64Value
+             * @member {number|Long|null|undefined} sint64Value
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.sint64Value = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.sint64Value = null;
 
             /**
              * Value boolValue.
-             * @member {boolean} boolValue
+             * @member {boolean|null|undefined} boolValue
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Value
              * @instance
              */
-            Value.prototype.boolValue = false;
+            Value.prototype.boolValue = null;
 
             // OneOf field names bound to virtual getters and setters
             let $oneOfFields;
@@ -856,9 +858,8 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
              * Properties of a Geometry.
              * @memberof esriPBuffer.FeatureCollectionPBuffer
              * @interface IGeometry
-             * @property {esriPBuffer.FeatureCollectionPBuffer.GeometryType|null} [geometryType] Geometry geometryType
              * @property {Array.<number>|null} [lengths] Geometry lengths
-             * @property {Array.<number>|null} [coords] Geometry coords
+             * @property {Array.<number|Long>|null} [coords] Geometry coords
              */
 
             /**
@@ -879,14 +880,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
             }
 
             /**
-             * Geometry geometryType.
-             * @member {esriPBuffer.FeatureCollectionPBuffer.GeometryType} geometryType
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.Geometry
-             * @instance
-             */
-            Geometry.prototype.geometryType = 0;
-
-            /**
              * Geometry lengths.
              * @member {Array.<number>} lengths
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Geometry
@@ -896,7 +889,7 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
 
             /**
              * Geometry coords.
-             * @member {Array.<number>} coords
+             * @member {Array.<number|Long>} coords
              * @memberof esriPBuffer.FeatureCollectionPBuffer.Geometry
              * @instance
              */
@@ -920,9 +913,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                 while (reader.pos < end) {
                     let tag = reader.uint32();
                     switch (tag >>> 3) {
-                    case 1:
-                        message.geometryType = reader.int32();
-                        break;
                     case 2:
                         if (!(message.lengths && message.lengths.length))
                             message.lengths = [];
@@ -939,9 +929,9 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                         if ((tag & 7) === 2) {
                             let end2 = reader.uint32() + reader.pos;
                             while (reader.pos < end2)
-                                message.coords.push(reader.sint32());
+                                message.coords.push(reader.sint64());
                         } else
-                            message.coords.push(reader.sint32());
+                            message.coords.push(reader.sint64());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -962,17 +952,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
             Geometry.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.geometryType != null && message.hasOwnProperty("geometryType"))
-                    switch (message.geometryType) {
-                    default:
-                        return "geometryType: enum value expected";
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                        break;
-                    }
                 if (message.lengths != null && message.hasOwnProperty("lengths")) {
                     if (!Array.isArray(message.lengths))
                         return "lengths: array expected";
@@ -984,8 +963,8 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                     if (!Array.isArray(message.coords))
                         return "coords: array expected";
                     for (let i = 0; i < message.coords.length; ++i)
-                        if (!$util.isInteger(message.coords[i]))
-                            return "coords: integer[] expected";
+                        if (!$util.isInteger(message.coords[i]) && !(message.coords[i] && $util.isInteger(message.coords[i].low) && $util.isInteger(message.coords[i].high)))
+                            return "coords: integer|Long[] expected";
                 }
                 return null;
             };
@@ -1236,138 +1215,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
             };
 
             return Feature;
-        })();
-
-        FeatureCollectionPBuffer.FeatureCollection = (function() {
-
-            /**
-             * Properties of a FeatureCollection.
-             * @memberof esriPBuffer.FeatureCollectionPBuffer
-             * @interface IFeatureCollection
-             * @property {number|null} [featureAttributeCount] FeatureCollection featureAttributeCount
-             * @property {Array.<esriPBuffer.FeatureCollectionPBuffer.Value>|null} [attributes] FeatureCollection attributes
-             * @property {Array.<number>|null} [coords] FeatureCollection coords
-             */
-
-            /**
-             * Constructs a new FeatureCollection.
-             * @memberof esriPBuffer.FeatureCollectionPBuffer
-             * @classdesc Represents a FeatureCollection.
-             * @implements IFeatureCollection
-             * @constructor
-             * @param {esriPBuffer.FeatureCollectionPBuffer.IFeatureCollection=} [properties] Properties to set
-             */
-            function FeatureCollection(properties) {
-                this.attributes = [];
-                this.coords = [];
-                if (properties)
-                    for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
-                            this[keys[i]] = properties[keys[i]];
-            }
-
-            /**
-             * FeatureCollection featureAttributeCount.
-             * @member {number} featureAttributeCount
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureCollection
-             * @instance
-             */
-            FeatureCollection.prototype.featureAttributeCount = 0;
-
-            /**
-             * FeatureCollection attributes.
-             * @member {Array.<esriPBuffer.FeatureCollectionPBuffer.Value>} attributes
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureCollection
-             * @instance
-             */
-            FeatureCollection.prototype.attributes = $util.emptyArray;
-
-            /**
-             * FeatureCollection coords.
-             * @member {Array.<number>} coords
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureCollection
-             * @instance
-             */
-            FeatureCollection.prototype.coords = $util.emptyArray;
-
-            /**
-             * Decodes a FeatureCollection message from the specified reader or buffer.
-             * @function decode
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureCollection
-             * @static
-             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @param {number} [length] Message length if known beforehand
-             * @returns {esriPBuffer.FeatureCollectionPBuffer.FeatureCollection} FeatureCollection
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            FeatureCollection.decode = function decode(reader, length) {
-                if (!(reader instanceof $Reader))
-                    reader = $Reader.create(reader);
-                let end = length === undefined ? reader.len : reader.pos + length, message = new $root.esriPBuffer.FeatureCollectionPBuffer.FeatureCollection();
-                while (reader.pos < end) {
-                    let tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.featureAttributeCount = reader.uint32();
-                        break;
-                    case 2:
-                        if (!(message.attributes && message.attributes.length))
-                            message.attributes = [];
-                        message.attributes.push($root.esriPBuffer.FeatureCollectionPBuffer.Value.decode(reader, reader.uint32()));
-                        break;
-                    case 3:
-                        if (!(message.coords && message.coords.length))
-                            message.coords = [];
-                        if ((tag & 7) === 2) {
-                            let end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
-                                message.coords.push(reader.sint32());
-                        } else
-                            message.coords.push(reader.sint32());
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
-                    }
-                }
-                return message;
-            };
-
-            /**
-             * Verifies a FeatureCollection message.
-             * @function verify
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureCollection
-             * @static
-             * @param {Object.<string,*>} message Plain object to verify
-             * @returns {string|null} `null` if valid, otherwise the reason why it is not
-             */
-            FeatureCollection.verify = function verify(message) {
-                if (typeof message !== "object" || message === null)
-                    return "object expected";
-                if (message.featureAttributeCount != null && message.hasOwnProperty("featureAttributeCount"))
-                    if (!$util.isInteger(message.featureAttributeCount))
-                        return "featureAttributeCount: integer expected";
-                if (message.attributes != null && message.hasOwnProperty("attributes")) {
-                    if (!Array.isArray(message.attributes))
-                        return "attributes: array expected";
-                    for (let i = 0; i < message.attributes.length; ++i) {
-                        let error = $root.esriPBuffer.FeatureCollectionPBuffer.Value.verify(message.attributes[i]);
-                        if (error)
-                            return "attributes." + error;
-                    }
-                }
-                if (message.coords != null && message.hasOwnProperty("coords")) {
-                    if (!Array.isArray(message.coords))
-                        return "coords: array expected";
-                    for (let i = 0; i < message.coords.length; ++i)
-                        if (!$util.isInteger(message.coords[i]))
-                            return "coords: integer[] expected";
-                }
-                return null;
-            };
-
-            return FeatureCollection;
         })();
 
         FeatureCollectionPBuffer.UniqueIdField = (function() {
@@ -2066,7 +1913,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
              * @property {Array.<esriPBuffer.FeatureCollectionPBuffer.Field>|null} [fields] FeatureResult fields
              * @property {Array.<esriPBuffer.FeatureCollectionPBuffer.Value>|null} [values] FeatureResult values
              * @property {Array.<esriPBuffer.FeatureCollectionPBuffer.Feature>|null} [features] FeatureResult features
-             * @property {esriPBuffer.FeatureCollectionPBuffer.FeatureCollection|null} [featureCollection] FeatureResult featureCollection
              */
 
             /**
@@ -2208,14 +2054,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
             FeatureResult.prototype.features = $util.emptyArray;
 
             /**
-             * FeatureResult featureCollection.
-             * @member {esriPBuffer.FeatureCollectionPBuffer.FeatureCollection|null|undefined} featureCollection
-             * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureResult
-             * @instance
-             */
-            FeatureResult.prototype.featureCollection = null;
-
-            /**
              * Decodes a FeatureResult message from the specified reader or buffer.
              * @function decode
              * @memberof esriPBuffer.FeatureCollectionPBuffer.FeatureResult
@@ -2284,9 +2122,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                             message.features = [];
                         message.features.push($root.esriPBuffer.FeatureCollectionPBuffer.Feature.decode(reader, reader.uint32()));
                         break;
-                    case 16:
-                        message.featureCollection = $root.esriPBuffer.FeatureCollectionPBuffer.FeatureCollection.decode(reader, reader.uint32());
-                        break;
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -2339,6 +2174,7 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                     case 2:
                     case 3:
                     case 4:
+                    case 127:
                         break;
                     }
                 if (message.spatialReference != null && message.hasOwnProperty("spatialReference")) {
@@ -2386,11 +2222,6 @@ export const esriPBuffer = $root.esriPBuffer = (() => {
                         if (error)
                             return "features." + error;
                     }
-                }
-                if (message.featureCollection != null && message.hasOwnProperty("featureCollection")) {
-                    let error = $root.esriPBuffer.FeatureCollectionPBuffer.FeatureCollection.verify(message.featureCollection);
-                    if (error)
-                        return "featureCollection." + error;
                 }
                 return null;
             };

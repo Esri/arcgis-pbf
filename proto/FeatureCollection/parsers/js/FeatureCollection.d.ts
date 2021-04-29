@@ -1,3 +1,18 @@
+/* Copyright 2021 Esri
+ *
+ * Licensed under the Apache License Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import * as $protobuf from "protobufjs";
 /** Namespace esriPBuffer. */
 export namespace esriPBuffer {
@@ -53,7 +68,8 @@ export namespace esriPBuffer {
             esriGeometryTypeMultipoint = 1,
             esriGeometryTypePolyline = 2,
             esriGeometryTypePolygon = 3,
-            esriGeometryTypeMultipatch = 4
+            esriGeometryTypeMultipatch = 4,
+            esriGeometryTypeNone = 127
         }
 
         /** FieldType enum. */
@@ -278,31 +294,31 @@ export namespace esriPBuffer {
             constructor(properties?: esriPBuffer.FeatureCollectionPBuffer.IValue);
 
             /** Value stringValue. */
-            public stringValue: string;
+            public stringValue?: (string|null);
 
             /** Value floatValue. */
-            public floatValue: number;
+            public floatValue?: (number|null);
 
             /** Value doubleValue. */
-            public doubleValue: number;
+            public doubleValue?: (number|null);
 
             /** Value sintValue. */
-            public sintValue: number;
+            public sintValue?: (number|null);
 
             /** Value uintValue. */
-            public uintValue: number;
+            public uintValue?: (number|null);
 
             /** Value int64Value. */
-            public int64Value: (number|Long);
+            public int64Value?: (number|Long|null);
 
             /** Value uint64Value. */
-            public uint64Value: (number|Long);
+            public uint64Value?: (number|Long|null);
 
             /** Value sint64Value. */
-            public sint64Value: (number|Long);
+            public sint64Value?: (number|Long|null);
 
             /** Value boolValue. */
-            public boolValue: boolean;
+            public boolValue?: (boolean|null);
 
             /** Value valueType. */
             public valueType?: ("stringValue"|"floatValue"|"doubleValue"|"sintValue"|"uintValue"|"int64Value"|"uint64Value"|"sint64Value"|"boolValue");
@@ -328,14 +344,11 @@ export namespace esriPBuffer {
         /** Properties of a Geometry. */
         interface IGeometry {
 
-            /** Geometry geometryType */
-            geometryType?: (esriPBuffer.FeatureCollectionPBuffer.GeometryType|null);
-
             /** Geometry lengths */
             lengths?: (number[]|null);
 
             /** Geometry coords */
-            coords?: (number[]|null);
+            coords?: ((number|Long)[]|null);
         }
 
         /** Represents a Geometry. */
@@ -347,14 +360,11 @@ export namespace esriPBuffer {
              */
             constructor(properties?: esriPBuffer.FeatureCollectionPBuffer.IGeometry);
 
-            /** Geometry geometryType. */
-            public geometryType: esriPBuffer.FeatureCollectionPBuffer.GeometryType;
-
             /** Geometry lengths. */
             public lengths: number[];
 
             /** Geometry coords. */
-            public coords: number[];
+            public coords: (number|Long)[];
 
             /**
              * Decodes a Geometry message from the specified reader or buffer.
@@ -463,55 +473,6 @@ export namespace esriPBuffer {
 
             /**
              * Verifies a Feature message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-        }
-
-        /** Properties of a FeatureCollection. */
-        interface IFeatureCollection {
-
-            /** FeatureCollection featureAttributeCount */
-            featureAttributeCount?: (number|null);
-
-            /** FeatureCollection attributes */
-            attributes?: (esriPBuffer.FeatureCollectionPBuffer.Value[]|null);
-
-            /** FeatureCollection coords */
-            coords?: (number[]|null);
-        }
-
-        /** Represents a FeatureCollection. */
-        class FeatureCollection implements IFeatureCollection {
-
-            /**
-             * Constructs a new FeatureCollection.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: esriPBuffer.FeatureCollectionPBuffer.IFeatureCollection);
-
-            /** FeatureCollection featureAttributeCount. */
-            public featureAttributeCount: number;
-
-            /** FeatureCollection attributes. */
-            public attributes: esriPBuffer.FeatureCollectionPBuffer.Value[];
-
-            /** FeatureCollection coords. */
-            public coords: number[];
-
-            /**
-             * Decodes a FeatureCollection message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns FeatureCollection
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): esriPBuffer.FeatureCollectionPBuffer.FeatureCollection;
-
-            /**
-             * Verifies a FeatureCollection message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
@@ -859,9 +820,6 @@ export namespace esriPBuffer {
 
             /** FeatureResult features */
             features?: (esriPBuffer.FeatureCollectionPBuffer.Feature[]|null);
-
-            /** FeatureResult featureCollection */
-            featureCollection?: (esriPBuffer.FeatureCollectionPBuffer.FeatureCollection|null);
         }
 
         /** Represents a FeatureResult. */
@@ -917,9 +875,6 @@ export namespace esriPBuffer {
 
             /** FeatureResult features. */
             public features: esriPBuffer.FeatureCollectionPBuffer.Feature[];
-
-            /** FeatureResult featureCollection. */
-            public featureCollection?: (esriPBuffer.FeatureCollectionPBuffer.FeatureCollection|null);
 
             /**
              * Decodes a FeatureResult message from the specified reader or buffer.

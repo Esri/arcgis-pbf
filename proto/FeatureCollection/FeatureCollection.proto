@@ -13,6 +13,7 @@
 
 syntax = "proto3";
 package esriPBuffer;
+option java_package = "com.esri.arcgis.protobuf";
 option optimize_for = LITE_RUNTIME;
 
 message FeatureCollectionPBuffer {
@@ -23,6 +24,7 @@ message FeatureCollectionPBuffer {
     esriGeometryTypePolyline = 2;
     esriGeometryTypePolygon = 3;
     esriGeometryTypeMultipatch = 4;
+    esriGeometryTypeNone = 127;
   }
 
   // FieldType
@@ -110,30 +112,21 @@ message FeatureCollectionPBuffer {
   }
 
   message Geometry {
-    GeometryType geometryType = 1;
     repeated uint32 lengths = 2 [packed = true]; // coordinate structure in lengths
-    repeated sint32 coords = 3 [packed = true]; // delta-encoded integer values
+    repeated sint64 coords = 3 [packed = true]; // delta-encoded integer values
   }
 
   message esriShapeBuffer {
-    bytes bytes  = 1;
+    bytes bytes = 1;
   }
 
   message Feature {
-    //repeated uint32 attributes = 1 [packed = true];
     repeated Value attributes = 1;
     oneof compressed_geometry {
       Geometry geometry = 2;
       esriShapeBuffer shapeBuffer = 3;
     }
     Geometry centroid = 4;
-  }
-
-  message FeatureCollection {
-    uint32 featureAttributeCount = 1;
-    //repeated uint32 attributes = 2 [packed = true];
-    repeated Value attributes= 2;
-    repeated sint32 coords = 3 [packed = true]; // delta-encoded integer value
   }
 
   message UniqueIdField {
@@ -188,7 +181,6 @@ message FeatureCollectionPBuffer {
     repeated Field fields = 13;
     repeated Value values = 14;
     repeated Feature features = 15;
-    FeatureCollection featureCollection = 16;
   }
 
   message CountResult{
@@ -208,6 +200,7 @@ message FeatureCollectionPBuffer {
       ObjectIdsResult idsResult = 3;
     }
   }
+
   // Any compliant implementation must first read the version
   // number encoded in this message and choose the correct
   // implementation for this version number before proceeding to

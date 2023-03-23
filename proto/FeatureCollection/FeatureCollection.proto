@@ -81,7 +81,7 @@ message FeatureCollectionPBuffer {
 
   message SpatialReference {
     uint32 wkid = 1;
-    uint32 lastestWkid = 2;
+    uint32 latestWkid = 2;
     uint32 vcsWkid = 3;
     uint32 latestVcsWkid = 4;
     string wkt = 5;
